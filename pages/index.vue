@@ -1,50 +1,51 @@
 <template>
   <div class="landing">
-    <landing-header/>
     <section class="content">
-      <a-row class="wrap">
-        <a-col :span="20">
-          <span class="signs">Аниме</span>
-        </a-col>
-      </a-row>
     </section>
     <section class="promo">
       <div class="container">
         <div class="feature">
-          <div class="text">
-            <h2>Отслеживай любимые аниме</h2>
+          <div class="text col-lg-4 col-md-4 col-sm-12">
+            <h3>Отслеживай любимые аниме</h3>
             <p>Обновляй свой аниме лист и делись им с друзьями</p>
           </div>
-          <div class="demo">
+          <div class="demo col-lg-8 col-md-8 col-sm-12">
+            <img src="https://i.imgur.com/lO6xTpy.png">
+          </div>
+        </div>
+        <div class="feature">
+          <div class="demo col-lg-8 col-md-8 col-sm-12">
+            <img src="https://i.imgur.com/lO6xTpy.png">
+          </div>
+          <div class="text col-lg-4 col-md-4 col-sm-12">
+            <h3>Оповещения о выходе новых серий</h3>
+            <p>Подписывайся и получай уведомления в свое мессенджеры</p>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="text col-lg-4 col-md-4 col-sm-12">
+            <h3>Создай свой проект по переводу</h3>
+            <p>Выкладывай свои переводы и гибко настраивай монетизацию</p>
+          </div>
+          <div class="demo col-lg-8 col-md-8 col-sm-12">
             <img src="https://i.imgur.com/lO6xTpy.png">
           </div>
         </div>
       </div>
     </section>
-    <landing-footer/>
   </div>
 </template>
 
 <script>
-    import LandingHeader from '@/components/landing-header.vue'
-    import LandingFooter from '@/components/landing-footer.vue'
     export default {
-        components: {
-            LandingHeader,
-            LandingFooter
-        },
-        data() {
-            return {
-                messages: ['лист', 'новости', 'сообщество'],
-            }
-        }
+        layout: 'landing',
     }
 </script>
 
 <style>
   .promo .container {
-    padding-left: 15%;
-    padding-right: 15%;
+    padding-left: 10%;
+    padding-right: 10%;
     padding-top: 30px;
   }
   .feature .demo {
@@ -56,17 +57,18 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    color: white;
+    color: #346181;
   }
 
   .text *{
-    color: white;
+    color: inherit;
+    text-decoration: none;
+    transition: .15s;
+    outline: 0;
   }
   .feature {
-    display: grid;
-    grid-column-gap: 100px;
-    grid-template-columns: 1fr 1fr;
-    margin-bottom: 200px;
+    display: flex;
+    margin-bottom: 100px;
   }
   .content {
     background: url('~static/background.jpg') center center;
@@ -105,5 +107,19 @@
   .promo {
     background: linear-gradient(180deg, #000000, #000000 700px);
     display: flex;
+  }
+
+  @media (max-width: 1040px) {
+    .promo .container {
+      display:flex;
+      flex-flow: column;
+    }
+    .feature {
+      display:flex;
+      flex-flow: column;
+    }
+    .feature .demo {
+      order: 1
+    }
   }
 </style>

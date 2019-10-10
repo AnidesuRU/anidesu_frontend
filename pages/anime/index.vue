@@ -1,52 +1,15 @@
 <template>
-  <a-layout>
-    <div class="container browse-anime">
-      <section class="cards">
-        <div class="card" v-for="anim in anime" :key="anim.id" :class="anim.title">
-          <AnimeCard v-bind="anim" class="card"/>
-        </div>
-      </section>
-      <section class="search-panel">
-        <a-form class="search-form" :form="form" >
-          <a-row :gutter="24">
-            <a-col v-for="i in 10" :key="i" :span="24" >
-              <a-form-item :label="`Field ${i}`">
-                <a-input v-decorator="[
-                `field-${i}`,
-                {
-                  rules: [{
-                    required: true,
-                    message: 'Input something!',
-                  }],
-                }
-              ]"
-                  placeholder="placeholder"
-                />
-              </a-form-item>
-            </a-col>
-          </a-row>
-          <a-row>
-            <a-col
-              :span="24"
-              :style="{ textAlign: 'right' }"
-            >
-              <a-button
-                type="primary"
-                html-type="submit"
-              >
-                Search
-              </a-button>
-              <a-button
-                :style="{ marginLeft: '8px' }"
-              >
-                Clear
-              </a-button>
-            </a-col>
-          </a-row>
-        </a-form>
-      </section>
-    </div>
-  </a-layout>
+  <v-container>
+    <section class="cards">
+      <div class="card" v-for="anim in anime" :key="anim.id" :class="anim.title">
+        <AnimeCard v-bind="anim" class="card"/>
+      </div>
+    </section>
+    <section class="search-panel">
+
+    </section>
+    <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+  </v-container>
 </template>
 
 <script>
@@ -58,13 +21,8 @@
         },
         data () {
             return {
+                current: 1,
                 anime: [],
-                form: this.$form.createForm(this),
-                function () {
-                    return {
-                        message: "Hello Vue!"
-                    }
-                }
             }
         },
         channels: {
@@ -83,8 +41,26 @@
         },
         methods: {
             async updateAnime() {
-                this.anime = await this.$axios.$get('/anime');
-            }
+                const response = await this.$axios.$get('/anime');
+                this.anime = response.anime;
+                this.totalPages = response.meta.total_pages
+            },
+            infiniteHandler($state) {
+                this.$axios.get('/anime', {
+                    params: {
+                        page: this.current + 1,
+                    },
+                }).then(({ data }) => {
+                    console.log(this.current)
+                    if (data.anime.length > 0) {
+                        this.current += 1;
+                        this.anime.push(...data.anime);
+                        $state.loaded();
+                    } else {
+                        $state.complete();
+                    }
+                });
+            },
         },
         mounted () {
             this.updateAnime();
@@ -119,12 +95,12 @@
 
 .cards::after {
   content: "";
-  flex: auto;
+  flex: 0 1 calc(50% - 1em)
 }
 .card {
   flex: 1 0 500px;
   box-sizing: border-box;
-  margin: 1rem .25em;
+  margin: 0.3rem .25em;
 }
 
 @media screen and (min-width: 40em) {
@@ -135,13 +111,13 @@
   }
 
   .card {
-    flex: 0 1 calc(50% - 1em);
+    flex: 0 1 calc(20% - 1em);
   }
 }
 
 @media screen and (min-width: 60em) {
   .card {
-    flex: 0 1 calc(25% - 1em);
+    flex: 0 1 calc(20% - 1em);
   }
 }
 </style>

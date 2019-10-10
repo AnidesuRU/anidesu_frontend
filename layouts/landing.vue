@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app>
-      <appHeader/>
+      <landingHeader/>
       <nuxt/>
       <appFooter/>
     </v-app>
@@ -9,19 +9,12 @@
 </template>
 
 <script>
-    import appHeader from '@/components/appHeader.vue'
+    import landingHeader from '@/components/landingHeader.vue'
     import appFooter from '@/components/appFooter.vue'
     export default {
         components: {
-            appFooter,
-            appHeader
+            landingHeader,
+            appFooter
         },
     }
 </script>
-
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-  }
-</style>

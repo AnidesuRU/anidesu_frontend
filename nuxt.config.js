@@ -1,3 +1,4 @@
+import colors from "vuetify/lib/util/colors";
 
 export default {
   mode: 'spa',
@@ -23,14 +24,13 @@ export default {
   ** Global CSS
   */
   css: [
-    'ant-design-vue/dist/antd.css'
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/antd-ui',
     { src: '@/plugins/actioncable-vue', ssr: false },
+    '~/plugins/vue-infinite-loading',
   ],
   /*
   ** Nuxt.js dev-modules
@@ -41,9 +41,31 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
+    'nuxt-webfontloader',
     '@nuxtjs/axios',
+    [
+      '@nuxtjs/vuetify',
+      {
+        treeShake: true,
+        defaultAssets: {
+          font: {
+            icons: 'Arial'
+          }
+        },
+        icons: {
+          iconfont: 'md'
+        },
+        theme: {
+          dark: true,
+          themes: {
+            dark: {
+              primary: colors.grey.darken4
+            },
+          }
+        }
+      }
+    ],
   ],
-
   axios: {
     host: 'localhost',
     port: 8080,
@@ -54,10 +76,5 @@ export default {
   ** Build configuration
   */
   build: {
-    /*
-    ** You can extend webpack config here
-    */
-    extend (config, ctx) {
-    }
   }
 }
